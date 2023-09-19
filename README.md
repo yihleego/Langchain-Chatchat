@@ -228,6 +228,10 @@ docker run -d --gpus all -p 80:8501 registry.cn-beijing.aliyuncs.com/chatchat/ch
 $ git clone https://huggingface.co/THUDM/chatglm2-6b
 
 $ git clone https://huggingface.co/moka-ai/m3e-base
+
+$ git clone git@hf.co:THUDM/chatglm2-6b
+
+$ git clone git@hf.co:moka-ai/m3e-base
 ```
 
 ### 3. 设置配置项

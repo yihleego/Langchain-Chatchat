@@ -19,6 +19,7 @@ $ conda activate env_name # Activate the environment
 
 # 更新py库
 $ pip3 install --upgrade pip
+$ python3 -m pip install --upgrade setuptools
 
 # 关闭环境
 $ source deactivate /your_path/env_name
