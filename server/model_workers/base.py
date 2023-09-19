@@ -51,7 +51,7 @@ class ApiModelWorker(BaseModelWorker):
 
     def generate_stream_gate(self, params):
         self.call_ct += 1
-    
+
     def generate_gate(self, params):
         for x in self.generate_stream_gate(params):
             pass
@@ -92,5 +92,5 @@ class ApiModelWorker(BaseModelWorker):
                 if content := msg[len(ai_start):].strip():
                     result.append({"role": ai_role, "content": content})
             else:
-                raise RuntimeError(f"unknow role in msg: {msg}")
+                raise RuntimeError(f"unknown role in msg: {msg}")
         return result

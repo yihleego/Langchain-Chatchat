@@ -8,7 +8,6 @@ from cachetools import cached, TTLCache
 from server.utils import get_model_worker_config
 from typing import List, Literal, Dict
 
-
 MODEL_VERSIONS = {
     "ernie-bot": "completions",
     "ernie-bot-turbo": "eb-instant",
@@ -45,7 +44,7 @@ MODEL_VERSIONS = {
 }
 
 
-@cached(TTLCache(1, 1800)) # 经过测试，缓存的token可以使用，目前每30分钟刷新一次
+@cached(TTLCache(1, 1800))  # 经过测试，缓存的token可以使用，目前每30分钟刷新一次
 def get_baidu_access_token(api_key: str, secret_key: str) -> str:
     """
     使用 AK，SK 生成鉴权签名（Access Token）
@@ -60,12 +59,12 @@ def get_baidu_access_token(api_key: str, secret_key: str) -> str:
 
 
 def request_qianfan_api(
-    messages: List[Dict[str, str]],
-    temperature: float = TEMPERATURE,
-    model_name: str = "qianfan-api",
-    version: str = None,
+        messages: List[Dict[str, str]],
+        temperature: float = TEMPERATURE,
+        model_name: str = "qianfan-api",
+        version: str = None,
 ) -> Dict:
-    BASE_URL = 'https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat'\
+    BASE_URL = 'https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat' \
                '/{model_version}?access_token={access_token}'
     config = get_model_worker_config(model_name)
     version = version or config.get("version")
@@ -102,6 +101,7 @@ class QianFanWorker(ApiModelWorker):
     """
     百度千帆
     """
+
     def __init__(
             self,
             *,
@@ -131,8 +131,9 @@ class QianFanWorker(ApiModelWorker):
         self.secret_key = config.get("secret_key")
 
     def generate_stream_gate(self, params):
-        messages = self.prompt_to_messages(params["prompt"])
-        text=""
+        messages = [{"role": "user", "content": "你是一个聪明、对人类有帮助的人工智能，你可以对人类提出的问题给出有用、详细、礼貌的回答。"}]
+        messages.extend(self.prompt_to_messages(params["prompt"]))
+        text = ""
         for resp in request_qianfan_api(messages,
                                         temperature=params.get("temperature"),
                                         model_name=self.model_names[0]):
@@ -151,7 +152,7 @@ class QianFanWorker(ApiModelWorker):
                 },
                     ensure_ascii=False
                 ).encode() + b"\0"
-    
+
     def get_embeddings(self, params):
         # TODO: 支持embeddings
         print("embedding")
