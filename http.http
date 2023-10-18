@@ -1,0 +1,10 @@
+###
+POST http://47.99.139.229:7861/chat/chat
+accept: application/json
+Content-Type: application/json
+
+{
+  "query": "如何创建一个合同",
+  "model_name": "qwen-api",
+  "stream": true
+}
